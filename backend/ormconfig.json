@@ -1,0 +1,25 @@
+{
+  "name": "development",
+  "type": "mongodb",
+  "host": "localhost",
+  "url": "mongodb://root:root@localhost:27017/rebirth?authSource=admin",
+  "synchronize": false,
+  "logging": true,
+  "entities": [
+    "src/**/*.entity.ts",
+    "dist/**/*.entity.js"
+  ],
+  "migrations": [
+    "src/migration/**/*.ts",
+    "dist/migration/**/*.js"
+  ],
+  "subscribers": [
+    "src/subscriber/**/*.ts",
+    "dist/subscriber/**/*.js"
+  ],
+  "cli": {
+    "entitiesDir": "src",
+    "migrationsDir": "src/migration",
+    "subscribersDir": "src/subscriber"
+  }
+}
