@@ -19,7 +19,7 @@ const port = process.env.PORT || 3000;
 async function bootstrap() {
   const connectionOptions = await getDbConnectionOptions(process.env.NODE_ENV);
 
-  const app = await NestFactory.create(AppModule.forRoot(connectionOptions));
+  const app = await NestFactory.create(AppModule.forRoot(connectionOptions), {cors: true});
 
   app.useGlobalPipes(new ValidationPipe({
 

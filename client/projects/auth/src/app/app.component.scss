@@ -1,0 +1,12 @@
+.auth-layout {
+  min-height: 100vh;
+}
+
+.form {
+  max-width: 500px;
+  margin: 50px auto 20px;
+
+  &__input-row {
+    width: 100%;
+  }
+}
