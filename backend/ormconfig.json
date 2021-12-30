@@ -1,8 +1,11 @@
 {
   "name": "development",
-  "type": "mongodb",
+  "type": "postgres",
   "host": "localhost",
-  "url": "mongodb://root:root@localhost:27017/rebirth?authSource=admin",
+  "port": 5432,
+  "username": "rebirth",
+  "password": "password123",
+  "database": "rebirth_db",
   "synchronize": false,
   "logging": true,
   "entities": [
@@ -23,3 +26,4 @@
     "subscribersDir": "src/subscriber"
   }
 }
+

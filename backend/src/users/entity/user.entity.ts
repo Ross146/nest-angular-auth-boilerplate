@@ -1,31 +1,17 @@
-import { Entity, ObjectID, ObjectIdColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+} from 'typeorm';
 
 @Entity()
-export default class User {
-  @ObjectIdColumn()
-  id: ObjectID;
-
-  @Column({
-    nullable: false,
-  })
-  username: string;
-
-  @Column({
-    nullable: false,
-    unique: true,
-  })
-  email: string;
-
-  @Column({
-    nullable: false,
-  })
-  password: string;
-
-  @Column({
-    nullable: false,
-    default: {
-      gender: 'male',
-    },
-  })
-  meta: Record<string, any>;
+export class UserEntity {
+  @PrimaryGeneratedColumn('uuid') id: string;
+  @Column({ type: 'varchar', nullable: false }) email: string;
+  @Column({ type: 'varchar', nullable: false }) username: string;
+  @Column({ type: 'varchar', nullable: false }) password: string;
+  @Column({ type: 'text', nullable: true }) description?: string;
+  @CreateDateColumn() createdOn?: Date;
+  @CreateDateColumn() updatedOn?: Date;
 }

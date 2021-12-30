@@ -9,7 +9,9 @@ export class AppModule {
   static forRoot(connOptions: ConnectionOptions): DynamicModule {
     return {
       module: AppModule,
+      controllers: [],
       imports: [AuthModule, UsersModule, TypeOrmModule.forRoot(connOptions)],
+      providers: [],
     };
   }
 }
