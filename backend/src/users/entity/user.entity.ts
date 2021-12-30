@@ -1,21 +1,18 @@
-import {Entity, ObjectID, ObjectIdColumn, Column} from "typeorm";
+import { Entity, ObjectID, ObjectIdColumn, Column } from 'typeorm';
 
 @Entity()
 export default class User {
-
   @ObjectIdColumn()
   id: ObjectID;
 
-  @Column(
-    {
-      nullable: false
-    }
-  )
+  @Column({
+    nullable: false,
+  })
   username: string;
 
   @Column({
     nullable: false,
-    unique: true
+    unique: true,
   })
   email: string;
 
@@ -23,4 +20,12 @@ export default class User {
     nullable: false,
   })
   password: string;
+
+  @Column({
+    nullable: false,
+    default: {
+      gender: 'male',
+    },
+  })
+  meta: Record<string, any>;
 }
