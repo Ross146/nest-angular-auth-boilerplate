@@ -8,7 +8,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { LocalAuthGuard } from './guards/local-auth.guard';
+import { LocalAuthGuard } from 'src/auth/guards/local-auth.guard';
 import { AuthService } from './auth.service';
 import { UserCreateDto } from '../users/dto/userCreate.dto';
 import { UsersService } from '../users/users.service';

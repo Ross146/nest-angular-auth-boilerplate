@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserCreateDto } from './dto/userCreate.dto';
@@ -12,8 +13,8 @@ export class UsersService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async findOne(username: string): Promise<UserDto> {
-    const user = await this.userRepository.findOne({ where: { username } });
+  async findOne(email: string): Promise<UserDto> {
+    const user = await this.userRepository.findOne({ where: { email } });
     if (user) {
       return {
         id: user.id.toString(),
@@ -24,7 +25,7 @@ export class UsersService {
     }
   }
 
-  async addUser(user: UserCreateDto): Promise<UserDto> {
+  async addUser(user: UserCreateDto): Promise<Omit<UserDto, 'password'>> {
     const { username, password, email } = user;
 
     // check if the user exists in the db
@@ -35,9 +36,11 @@ export class UsersService {
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const userToSave: UserEntity = await this.userRepository.create({
       username,
-      password,
+      password: hashedPassword,
       email,
     });
     const savedUser = await this.userRepository.save(userToSave);
@@ -45,7 +48,6 @@ export class UsersService {
     return {
       id: savedUser.id.toString(),
       username: savedUser.username,
-      password: savedUser.password,
       email: savedUser.email,
     };
   }
