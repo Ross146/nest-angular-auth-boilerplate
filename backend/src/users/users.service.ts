@@ -4,13 +4,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserCreateDto } from './dto/userCreate.dto';
 import { UserDto } from './dto/user.dto';
 import { UserEntity } from './entity/user.entity';
-import { Repository } from 'typeorm';
+import {Repository, UpdateResult} from 'typeorm';
+import { AvatarCreateDto } from 'src/users/dto/avatarCreate.dto';
+import { AvatarDto } from 'src/users/dto/avatar.dto';
+import { AvatarEntity } from 'src/users/entity/avatar.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(AvatarEntity)
+    private readonly avatarRepository: Repository<AvatarEntity>,
   ) {}
 
   async findOne(email: string): Promise<UserDto> {
@@ -50,5 +55,42 @@ export class UsersService {
       username: savedUser.username,
       email: savedUser.email,
     };
+  }
+
+  async addAvatar({ userId, avatar }: AvatarCreateDto): Promise<AvatarDto> {
+    // check if the user exists in the db
+    const userInDb = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+    if (!userInDb) {
+      throw new HttpException('User does not exist', HttpStatus.BAD_REQUEST);
+    }
+
+    // check if the avatar exists in the db
+    const avatarInDb = await this.avatarRepository.findOne({
+      where: { user: userInDb },
+    });
+
+    if (avatarInDb) {
+      await this.avatarRepository.update(
+        { user: userInDb },
+        {
+          avatar: avatar,
+        },
+      );
+    } else {
+      const avatarToSave: AvatarEntity = await this.avatarRepository.create({
+        user: userInDb,
+        avatar: avatar,
+      });
+
+      const savedAvatar = await this.avatarRepository.save(avatarToSave);
+
+      return {
+        avatar: savedAvatar.avatar,
+        userId: savedAvatar.user.id,
+        id: savedAvatar.id,
+      };
+    }
   }
 }
