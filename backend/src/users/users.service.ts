@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserCreateDto } from './dto/userCreate.dto';
 import { UserDto } from './dto/user.dto';
 import { UserEntity } from './entity/user.entity';
-import {Repository, UpdateResult} from 'typeorm';
+import { Repository } from 'typeorm';
 import { AvatarCreateDto } from 'src/users/dto/avatarCreate.dto';
 import { AvatarDto } from 'src/users/dto/avatar.dto';
 import { AvatarEntity } from 'src/users/entity/avatar.entity';
@@ -58,7 +58,6 @@ export class UsersService {
   }
 
   async addAvatar({ userId, avatar }: AvatarCreateDto): Promise<AvatarDto> {
-    // check if the user exists in the db
     const userInDb = await this.userRepository.findOne({
       where: { id: userId },
     });
@@ -66,7 +65,6 @@ export class UsersService {
       throw new HttpException('User does not exist', HttpStatus.BAD_REQUEST);
     }
 
-    // check if the avatar exists in the db
     const avatarInDb = await this.avatarRepository.findOne({
       where: { user: userInDb },
     });
