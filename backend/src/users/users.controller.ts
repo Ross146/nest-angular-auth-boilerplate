@@ -1,23 +1,22 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { UserCreateDto } from './dto/userCreate.dto';
-import { UserDto } from './dto/user.dto';
+import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { AvatarCreateDto } from 'src/users/dto/avatarCreate.dto';
 import { UsersService } from './users.service';
 import { AvatarDto } from 'src/users/dto/avatar.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
-@Controller('users')
+@Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post('createUser')
-  async createUser(
-    @Body() user: UserCreateDto,
-  ): Promise<Omit<UserDto, 'password'>> {
-    return await this.usersService.addUser(user);
-  }
-
-  @Post('addAvatar')
-  async addUserAvatar(@Body() avatarData: AvatarCreateDto): Promise<AvatarDto> {
-    return await this.usersService.addAvatar(avatarData);
+  @UseGuards(JwtAuthGuard)
+  @Post('avatar')
+  async addUserAvatar(
+    @Body() avatarData: Omit<AvatarCreateDto, 'userId'>,
+    @Request() req,
+  ): Promise<AvatarDto> {
+    return await this.usersService.addAvatar({
+      userId: req.user.userId,
+      avatar: avatarData.avatar,
+    });
   }
 }

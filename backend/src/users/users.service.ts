@@ -86,7 +86,6 @@ export class UsersService {
 
       return {
         avatar: savedAvatar.avatar,
-        userId: savedAvatar.user.id,
         id: savedAvatar.id,
       };
     }

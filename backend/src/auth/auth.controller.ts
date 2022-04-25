@@ -22,7 +22,6 @@ export class AuthController {
   ) {}
 
   @Post('sign-up')
-  @UsePipes(new ValidationPipe())
   async signUp(@Body() user: UserCreateDto) {
     return this.userService.addUser(user);
   }
