@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "nest": "nest",
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -21,6 +22,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "run:services": "docker-compose up && exit 0",
     "run:migration:create": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -f ormconfig.json -c development migration:create -n",
+    "run:migration:generate": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -f ormconfig.json -c development migration:generate -n",
     "run:migration:run": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -f ormconfig.json -c development migration:run",
     "stop:services": "docker-compose kill"
   },
@@ -31,17 +33,20 @@
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/typeorm": "^8.0.2",
+    "@types/bcrypt": "^5.0.0",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
-    "class-validator": "^0.13.1",
+    "class-validator": "^0.13.2",
     "mongodb": "^3.7.2",
     "passport": "^0.4.1",
+    "passport-custom": "^1.1.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
+    "pg": "^8.7.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.2.38"
+    "typeorm": "^0.2.35"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
